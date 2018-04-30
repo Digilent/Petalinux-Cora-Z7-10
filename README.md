@@ -48,6 +48,9 @@ https://github.com/Digilent/digilent-apps.
 ethaddr=xx:xx:xx:xx:xx:xx
 
   or (2), by setting the MAC address in the petalinux-config menu and then rebuilding the binaries.
+* It seems likely the XADC Wizard is no longer needed due to improvements made to the Xilinx XADC driver and petalinux. In a future release 
+  it should be removed from the block diagram, and system-user.dtsi currently should be modified to target the node that is now generated 
+  for the hard silicon XADC controller found in the Zynq PS. 
 
 ## Quick-Start Guide
 
@@ -244,7 +247,8 @@ This section is only relevant for those who wish to upstream their work or versi
 Note the project should be released configured as initramfs for consistency, unless there is very good reason to release it with SD rootfs.
 
 ```
-petalinux-package --prebuilt --clean --fpga images/linux/cora_z7_10_wrapper.bit -a images/linux/image.ub:images/image.ub 
+petalinux-package --prebuilt --clean --fpga images/linux/cora_z7_10_wrapper.bit -a images/linux/image.ub:images/image.ub
+echo "ethaddr=00:0a:35:00:1e:53" > pre-built/linux/images/uEnv.txt 
 petalinux-build -x distclean
 petalinux-build -x mrproper
 petalinux-package --bsp --force --output ../releases/Petalinux-Cora-Z7-10-20XX.X-X.bsp -p ./
